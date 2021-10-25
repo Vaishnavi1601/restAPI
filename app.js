@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const feedRoutes = require('./routes/feed');
+const { read } = require('fs');
 
 const app = express();
 
@@ -9,6 +10,15 @@ const app = express();
 
 //we need this middleware to parse incoming json data so that we are able to extract it on the body
 app.use(bodyParser.json()); //application.json
+
+app.use((req, res,next) => {
+
+  //every response we send will have this header
+  res.setHeader('Access-Control-Allow-Orgin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization');
+  next();
+})
 
 app.use('/feed', feedRoutes);
 
